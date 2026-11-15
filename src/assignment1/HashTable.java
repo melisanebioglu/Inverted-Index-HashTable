@@ -37,7 +37,7 @@ public class HashTable<V> {
 		collisionCount = 0 ;
 		
 	}
-	
+		
 	
 	private int hashSSF(String key) {
 
@@ -52,12 +52,54 @@ public class HashTable<V> {
 	}
 	
 	
+	private int findIndex(String key) {
+
+	    int index = hashSSF(key);
+
+	    for (int i = 0; i < capacity; i++) 
+	    {
+	        if (keys[index] == null && !deleted[index]) 
+	        {
+	            return -1;
+	        }
+
+	        if (keys[index] != null && keys[index].equals(key)) 
+	        {
+	            return index;
+	        }
+
+	        index = (index + 1) % capacity;
+	    }
+
+	    return -1;
+	}
+
+	
 	public void put(String key, V value) {
 
 	    if (key == null || value == null) 
 	    {
 	        throw new IllegalArgumentException("Key or value cannot be null!");
 	    }
+
+	    int existingIndex = findIndex(key);
+
+	    if (existingIndex != -1)
+	    {
+	        values[existingIndex] = value;
+	        return;
+	    }
+
+	    if ((double) (size + 1) / capacity >= maxLoadFactor) 
+	    {
+	        resize(capacity * 2);
+	    }
+
+	    insertWithoutResize(key, value);
+	}
+	
+	
+	private void insertWithoutResize(String key, V value) {
 
 	    int index = hashSSF(key);
 	    int firstDeleted = -1;
@@ -79,9 +121,7 @@ public class HashTable<V> {
 	                keys[index] = key;
 	                values[index] = value;
 	                deleted[index] = false;
-	                
 	                size++;
-
 	                return;
 	            }
 
@@ -91,26 +131,28 @@ public class HashTable<V> {
 	            }
 	        }
 
-	        else if (keys[index].equals(key)) 
+	        else 
 	        {
-	            values[index] = value;
-	            
-	            return;
+	        	if (keys[index].equals(key)) 
+	        	{
+	        		values[index] = value;
+		            return;
+	        	}
+	        	
+	        	 collisionCount++;
+
 	        }
 
-	        collisionCount++;
-	        
 	        index = (index + 1) % capacity;
 	    }
 
 	    if (firstDeleted != -1) 
 	    {
+
 	        keys[firstDeleted] = key;
 	        values[firstDeleted] = value;
 	        deleted[firstDeleted] = false;
-	        
 	        size++;
-	        
 	        return;
 	    }
 
@@ -177,6 +219,48 @@ public class HashTable<V> {
 		}
 		
 	}
+	
+	
+	public void resize(int newCapacity) {
+
+	    if (newCapacity <= capacity) 
+	    {
+	        throw new IllegalArgumentException("New capacity must be larger!");
+	    }
+
+	    String[] oldKeys = keys;
+	    V[] oldValues = values;
+
+	    capacity = newCapacity;
+
+	    keys = new String[capacity];
+	    values = (V[]) new Object[capacity];
+	    deleted = new boolean[capacity];
+
+	    size = 0;
+
+	    for (int i = 0; i < oldKeys.length; i++) 
+	    {
+
+	        if (oldKeys[i] != null) {
+	            insertWithoutResize(oldKeys[i], oldValues[i]);
+	        }
+	    }
+	}
+	
+	
+	public int getCapacity() {
+	    return capacity;
+	}
+	
+	
+	public int getCollisionCount() {
+	    return collisionCount;
+	}
+
+	
+	
+	
 	
 	
 	
