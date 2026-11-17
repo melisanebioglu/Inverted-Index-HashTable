@@ -395,8 +395,38 @@ public class HashTable<V> {
 	public int getCollisionCount() {
 	    return collisionCount;
 	}
+	
+	
+	public int getTotalCollisionCount() {
+
+	    int total = collisionCount;
+
+	    for (int i = 0; i < capacity; i++) 
+	    {
+
+	        if (values[i] instanceof HashTable<?>)
+	        {
+
+	            HashTable<?> innerTable = (HashTable<?>) values[i];
+
+	            total += innerTable.getCollisionCount();
+	        }
+	    }
+
+	    return total;
+	}
 
 	
+	public void printEntries() {
+		
+	    for (int i = 0; i < capacity; i++) 
+	    {
+	        if (keys[i] != null && !deleted[i])
+	        {
+	            System.out.println(keys[i] + " : " + values[i]);
+	        }
+	    }
+	}
 	
 	
 	
