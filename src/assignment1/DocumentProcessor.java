@@ -137,8 +137,6 @@ public class DocumentProcessor {
                 processDocument(file.getPath(), documentName);
             }
         }  
-        
-        System.out.println("Directory finished: " + directoryPath);
     }
     
     

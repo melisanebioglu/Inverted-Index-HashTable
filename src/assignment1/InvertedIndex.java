@@ -26,7 +26,7 @@ public class InvertedIndex {
 
 	    if (word == null || documentName == null) 
 	    {
-	        throw new IllegalArgumentException("Word or document name cannot be null!");
+	        throw new IllegalArgumentException("Word or document name can't be null!");
 	    }
 
 	    HashTable<Integer> documents = index.get(word);
@@ -62,7 +62,7 @@ public class InvertedIndex {
 
 	    if (word == null)
 	    {
-	        throw new IllegalArgumentException("Word cannot be null!");
+	        throw new IllegalArgumentException("Word can't be null!");
 	    }
 
 	    HashTable<Integer> documents = index.get(word);
@@ -75,7 +75,7 @@ public class InvertedIndex {
 
 	    if (word == null)
 	    {
-	        throw new IllegalArgumentException("Word cannot be null!");
+	        throw new IllegalArgumentException("Word can't be null!");
 	    }
 
 	    index.remove(word);

@@ -90,7 +90,17 @@ public class HashTable<V> {
 	    for (int i = 0; i < key.length(); i++) 
 	    {
 
-	        int characterValue = key.charAt(i) - 'a' + 1;
+	        char ch = key.charAt(i);
+	        int characterValue;
+
+	        if (ch >= 'a' && ch <= 'z') 
+	        {
+	            characterValue = ch - 'a' + 1;
+	        }
+	        else 
+	        {
+	            characterValue = ch;
+	        }
 
 	        hash = (hash * z + characterValue) % capacity;
 	    }
@@ -155,11 +165,12 @@ public class HashTable<V> {
 	
 	
 	private int hashModuloQ(String key) {
-		
+
 	    int hash = 0;
 
 	    if (hashFunction.equals("SSF")) 
 	    {
+
 	        for (int i = 0; i < key.length(); i++) 
 	        {
 	            hash = (hash + key.charAt(i)) % secondaryPrime;
@@ -167,12 +178,24 @@ public class HashTable<V> {
 	    }
 	    else 
 	    {
+
 	        int z = 33;
 	        key = key.toLowerCase();
 
-	        for (int i = 0; i < key.length(); i++) 
+	        for (int i = 0; i < key.length(); i++)
 	        {
-	            int characterValue = key.charAt(i) - 'a' + 1;
+	            char ch = key.charAt(i);
+	            int characterValue;
+
+	            if (ch >= 'a' && ch <= 'z') 
+	            {
+	                characterValue = ch - 'a' + 1;
+	            }
+	            else 
+	            {
+	                characterValue = ch;
+	            }
+
 	            hash = (hash * z + characterValue) % secondaryPrime;
 	        }
 	    }
@@ -220,7 +243,7 @@ public class HashTable<V> {
 
 	    if (key == null || value == null) 
 	    {
-	        throw new IllegalArgumentException("Key or value cannot be null!");
+	        throw new IllegalArgumentException("Key or value can't be null!");
 	    }
 
 	    int existingIndex = findIndex(key);
@@ -314,7 +337,7 @@ public class HashTable<V> {
 		
 	    if (key == null)
 	    {
-	        throw new IllegalArgumentException("Key cannot be null!");
+	        throw new IllegalArgumentException("Key can't be null!");
 	    }
 
 	    int index = findIndex(key);
@@ -332,7 +355,7 @@ public class HashTable<V> {
 		
 	    if (key == null) 
 	    {
-	        throw new IllegalArgumentException("Key cannot be null!");
+	        throw new IllegalArgumentException("Key can't be null!");
 	    }
 
 	    int index = findIndex(key);
